@@ -1,0 +1,22 @@
+name: Push
+
+on: [push, pull_request]
+
+jobs:
+  lint-ruff:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v1
+        with:
+          version: latest
+
+      - name: Install Ruff
+        run: uv add ruff
+      
+      - name: Lint with ruff
+        run: uv run ruff check
