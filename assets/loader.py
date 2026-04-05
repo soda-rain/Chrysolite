@@ -16,7 +16,7 @@ for path in Path('assets/icons/light').iterdir():
         icon_light = QtGui.QIcon(path.as_posix())
         ICONS_LIGHT[path.stem] = icon_light
 
-for path in Path('assets/icons/disabled_dark').iterdir():
+for path in Path('assets/icons/dark').iterdir():
     if path.is_file() and path.suffix == '.svg':
         ICONS_DARK[path.stem].addFile(path.as_posix(), mode=QtGui.QIcon.Mode.Disabled)
 
