@@ -1,12 +1,13 @@
+__all__ = ['theme', 'build_custom_colors']
 from pathlib import Path
 import json
 
+theme_path = Path('editor/theme/theme.json')
+with open(theme_path) as f:
+    theme = json.load(f)
+
 def build_custom_colors():
     """Load the colors for the default theme"""
-    theme_path = Path('editor/theme/theme.json')
-    with open(theme_path) as f:
-        theme = json.load(f)
-
     return {
         'background': theme['background'],
         'foreground': theme['foreground'],
