@@ -23,5 +23,5 @@ class Library(QtWidgets.QMainWindow):
 
         self.open_project_button = QtWidgets.QPushButton()
         self.project_button_group_layout.addWidget(self.open_project_button)
-        self.open_project_button.setIcon(ICONS_LIGHT['plus'])
+        self.open_project_button.setIcon(ICONS_LIGHT['folder-open'])
         self.open_project_button.setText('Open')
