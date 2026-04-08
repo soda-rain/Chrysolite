@@ -1,42 +1,56 @@
-__all__ = ['ICONS_DARK', 'ICONS_LIGHT']
+__all__ = ['ICONS_BACKGROUND', 'ICONS_FOREGROUND']
 
 from editor.theme.theme_builder import theme
 from pathlib import Path
 from PySide6 import QtCore, QtGui, QtSvg
 
-def get_colored_svg_icon(svg_path: Path, hex_color: str, size: int = 512) -> QtGui.QPixmap:
-    """
-    Loads an SVG, tints it to a specific hex color using masking, 
-    and returns a QIcon.
-    """
-    renderer = QtSvg.QSvgRenderer(svg_path.as_posix())
-    if not renderer.isValid():
-        raise Exception('Renderer is not valid')
 
-    pixmap = QtGui.QPixmap(QtCore.QSize(size, size))
-    pixmap.fill(QtCore.Qt.GlobalColor.transparent)
+class SvgIconEngine(QtGui.QIconEngine):
+    def __init__(self, normal: QtSvg.QSvgRenderer, disabled: QtSvg.QSvgRenderer | None = None):
+        super().__init__()
+        self.renderers = {
+            QtGui.QIcon.Mode.Normal: normal,
+            QtGui.QIcon.Mode.Disabled: disabled or normal,
+        }
 
-    painter = QtGui.QPainter(pixmap)
-    painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
-    renderer.render(painter)
+    def _renderer_for(self, mode):
+        return self.renderers.get(mode, self.renderers[QtGui.QIcon.Mode.Normal])
 
-    painter.setCompositionMode(QtGui.QPainter.CompositionMode.CompositionMode_SourceIn)
-    painter.fillRect(pixmap.rect(), QtGui.QColor(hex_color))
-    painter.end()
+    def pixmap(self, size, mode, state):
+        image = QtGui.QImage(size, QtGui.QImage.Format.Format_ARGB32_Premultiplied)
+        image.fill(QtCore.Qt.GlobalColor.transparent)
+        painter = QtGui.QPainter(image)
+        self._renderer_for(mode).render(painter, QtCore.QRectF(0, 0, size.width(), size.height()))
+        painter.end()
+        return QtGui.QPixmap.fromImage(image)
 
-    return pixmap
+    def paint(self, painter, rect, mode, state):
+        self._renderer_for(mode).render(painter, QtCore.QRectF(rect))
 
-ICONS_DARK: dict[str, QtGui.QIcon] = {}
-ICONS_LIGHT: dict[str, QtGui.QIcon] = {}
+    def clone(self):
+        return SvgIconEngine(self.renderers[QtGui.QIcon.Mode.Normal], self.renderers[QtGui.QIcon.Mode.Disabled])
 
-dark_icon_color = theme['background']
-light_icon_color = theme['foreground']
-light_disabled_icon_color = theme['foreground_disabled']
+
+def make_vector_icon(path: Path, normal_color: str, disabled_color: str) -> QtGui.QIcon:
+    raw = path.read_bytes()
+    normal_data = raw.replace(b'currentColor', normal_color.encode('ascii'), 1)
+    disabled_data = raw.replace(b'currentColor', disabled_color.encode('ascii'), 1)
+    normal = QtSvg.QSvgRenderer(QtCore.QByteArray(normal_data))
+    disabled = QtSvg.QSvgRenderer(QtCore.QByteArray(disabled_data))
+    return QtGui.QIcon(SvgIconEngine(normal, disabled))
+
+
+ICONS_BACKGROUND: dict[str, QtGui.QIcon] = {}
+ICONS_FOREGROUND: dict[str, QtGui.QIcon] = {}
+
+background_icon_color = theme['background']
+foreground_icon_color = theme['foreground']
+foreground_disabled_icon_color = theme['foreground_disabled']
 
 def init():
     for path in Path('assets/icons').iterdir():
-        if path.is_file() and path.suffix == '.svg':
-            ICONS_DARK[path.stem] = QtGui.QIcon(get_colored_svg_icon(path, dark_icon_color))
-            ICONS_DARK[path.stem].addPixmap(get_colored_svg_icon(path, dark_icon_color), mode=QtGui.QIcon.Mode.Disabled)
-            ICONS_LIGHT[path.stem] = QtGui.QIcon(get_colored_svg_icon(path, light_icon_color))
-            ICONS_LIGHT[path.stem].addPixmap(get_colored_svg_icon(path, light_disabled_icon_color), mode=QtGui.QIcon.Mode.Disabled)
+        if path.suffix != '.svg':
+            continue
+        ICONS_BACKGROUND[path.stem] = make_vector_icon(path, background_icon_color, background_icon_color)
+        ICONS_FOREGROUND[path.stem] = make_vector_icon(path, foreground_icon_color, foreground_disabled_icon_color)
+

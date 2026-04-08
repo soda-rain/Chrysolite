@@ -2,11 +2,9 @@
   "background": "#121314",
   "background_light": "#191a1b",
   "background_active": "#2c2d2e",
-  "accent": "#edecec",
-  "accent_active": "#d7d6d5",
-  "accent_disabled": "#3f3d38",
   "foreground": "#edecec",
   "foreground_dark": "#969592",
   "foreground_disabled": "#555555",
+  "foreground_active": "#d7d6d5",
   "border": "#3f4042"
 }

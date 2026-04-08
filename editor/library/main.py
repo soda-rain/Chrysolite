@@ -1,5 +1,5 @@
 from PySide6 import QtWidgets
-from assets.loader import ICONS_LIGHT, ICONS_DARK
+from assets.loader import ICONS_BACKGROUND, ICONS_FOREGROUND
 
 
 class Library(QtWidgets.QMainWindow):
@@ -17,11 +17,11 @@ class Library(QtWidgets.QMainWindow):
 
         self.new_project_button = QtWidgets.QPushButton()
         self.project_button_group_layout.addWidget(self.new_project_button)
-        self.new_project_button.setIcon(ICONS_DARK['plus'])
+        self.new_project_button.setIcon(ICONS_BACKGROUND['plus'])
         self.new_project_button.setText('New')
         self.new_project_button.setDefault(True)
 
         self.open_project_button = QtWidgets.QPushButton()
         self.project_button_group_layout.addWidget(self.open_project_button)
-        self.open_project_button.setIcon(ICONS_LIGHT['folder-open'])
+        self.open_project_button.setIcon(ICONS_FOREGROUND['folder-open'])
         self.open_project_button.setText('Open')
