@@ -1,0 +1,8 @@
+{
+    "editor.datatype.base_datatype": {
+        "view": null
+    },
+    "editor.datatype.string_datatype": {
+        "view": "editor.datatype_view.string_datatype_view"
+    }
+}
