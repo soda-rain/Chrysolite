@@ -1,4 +1,5 @@
 from editor.core.datatypes.path_datatype import PathDatatype
+from editor.widgets.custom_button import CustomButton
 from .base_datatype_view import BaseDatatypeView
 from assets.loader import ICONS_FOREGROUND
 from PySide6 import QtWidgets
@@ -14,12 +15,12 @@ class PathDatatypeView(BaseDatatypeView):
         self.is_directory: bool = False
 
         self.main_layout = QtWidgets.QHBoxLayout(self)
-        self.path_display_button = QtWidgets.QPushButton()
+        self.path_display_button = CustomButton()
         self.path_display_button.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
         self.main_layout.addWidget(self.path_display_button)
         self.update_path_display_text()
 
-        self.change_path_button = QtWidgets.QPushButton()
+        self.change_path_button = CustomButton()
         self.change_path_button.setIcon(ICONS_FOREGROUND['folder-open'])
         self.main_layout.addWidget(self.change_path_button)
 

@@ -1,4 +1,5 @@
 from .base_dialog import BaseDialog
+from editor.widgets.custom_button import CustomButton
 from PySide6 import QtWidgets
 
 
@@ -10,7 +11,7 @@ class SelectionDialog(BaseDialog):
         self.main_layout.addWidget(self.button_group)
         self.button_group_layout = QtWidgets.QHBoxLayout(self.button_group)
 
-        self.accept_button = QtWidgets.QPushButton()
+        self.accept_button = CustomButton()
         self.accept_button.setText('Accept')
         self.accept_button.setEnabled(False)
         self.accept_button.setDefault(True)
@@ -18,7 +19,7 @@ class SelectionDialog(BaseDialog):
         self.accept_button.clicked.connect(self.accept)
         self.button_group_layout.addWidget(self.accept_button)
 
-        self.cancel_button = QtWidgets.QPushButton()
+        self.cancel_button = CustomButton()
         self.cancel_button.setText('Cancel')
         self.cancel_button.setSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
         self.cancel_button.clicked.connect(self.reject)
