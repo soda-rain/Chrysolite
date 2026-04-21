@@ -1,4 +1,4 @@
-from editor.core.file_factory.fragment_config import create_fragment_config
+from editor.core.file_factory.chrysolite_config import create_chrysolite_config
 from editor.theme import build_custom_colors
 from assets.loader import init
 from editor.library import Library
@@ -7,8 +7,8 @@ from pathlib import Path
 import qdarktheme
 import sys
 
-if not Path('.fragment').exists():
-    create_fragment_config(Path(''))
+if not Path('.chrysolite').exists():
+    create_chrysolite_config(Path(''))
 
 def start():
     app = QtWidgets.QApplication()

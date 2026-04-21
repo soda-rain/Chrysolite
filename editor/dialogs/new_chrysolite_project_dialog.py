@@ -23,7 +23,7 @@ def validate_dirname(name: str) -> bool:
 
 
 
-class NewFragmentProjectDialog(SelectionDialog):
+class NewChrysoliteProjectDialog(SelectionDialog):
     def __init__(self, parent):
         super().__init__(parent)
 

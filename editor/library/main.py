@@ -1,4 +1,4 @@
-from editor.dialogs.new_fragment_project_dialog import NewFragmentProjectDialog
+from editor.dialogs.new_chrysolite_project_dialog import NewChrysoliteProjectDialog
 from PySide6 import QtWidgets
 from assets.loader import ICONS_BACKGROUND, ICONS_FOREGROUND
 
@@ -29,7 +29,7 @@ class Library(QtWidgets.QMainWindow):
         self.open_project_button.setText('Open')
 
     def spawn_new_project_dialog(self):
-        dialog = NewFragmentProjectDialog(self)
+        dialog = NewChrysoliteProjectDialog(self)
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             # Please implement after getting a path datatype for the base folder datatype
             raise NotImplementedError('OH NO, it doesn\'t seem like there\'s anything here :(')
